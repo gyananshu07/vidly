@@ -6,6 +6,8 @@ import paginate from "../utilities/paginate";
 import { getGenres } from "../services/fakeGenreService";
 import _ from "lodash";
 import MoviesTable from "./moviesTable";
+import { Link } from "react-router-dom";
+import MovieForm from "./movieForm";
 
 class Movies extends Component {
   state = {
@@ -87,6 +89,9 @@ class Movies extends Component {
         </div>
 
         <div className="col">
+          <Link className="btn btn-primary mb-2" to="/movies/new">
+            Add Movie
+          </Link>
           <p>Showing {totalCount} movies in the database.</p>
           <MoviesTable
             movies={data}

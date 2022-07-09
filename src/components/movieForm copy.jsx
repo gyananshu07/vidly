@@ -1,9 +1,9 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
-import { useNavigate, useParams } from "react-router-dom";
+import { getMovie, saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
+import { useNavigate } from "react-router-dom";
 
 class MovieForm extends Form {
   state = {
@@ -33,19 +33,26 @@ class MovieForm extends Form {
       .label("Daily Rental Rate"),
   };
 
-  componentDidMount() {
-    const genres = getGenres();
+  async populateGenre() {
+    const { data: genres } = await getGenres();
     this.setState({ genres });
+  }
 
-    console.log(this.props);
+  async populateMovie() {
+    try {
+      const movieId = this.props.match.params.id;
+      if (movieId === "new") return;
+      const { data: movie } = await getMovie(movieId);
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history("/not-found");
+    }
+  }
 
-    const movieId = this.props.params.id;
-    if (movieId === "new") return;
-
-    const movie = getMovie(movieId);
-    if (!movie) return this.props.history("/notfound");
-
-    this.setState({ data: this.mapToViewModel(movie) });
+  async componentDidMount() {
+    await this.populateGenre();
+    await this.populateMovie();
   }
 
   mapToViewModel(movie) {
@@ -58,10 +65,10 @@ class MovieForm extends Form {
     };
   }
 
-  doSubmit = () => {
-    saveMovie(this.state.data);
+  doSubmit = async () => {
+    await saveMovie(this.state.data);
 
-    this.props.history("/movies");
+    this.props.history.push("/movies");
   };
 
   render() {
@@ -80,6 +87,4 @@ class MovieForm extends Form {
   }
 }
 
-export default (props) => (
-  <MovieForm history={useNavigate()} params={useParams()} />
-);
+export default (props) => <MovieForm history={useNavigate()} />;
