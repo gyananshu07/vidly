@@ -1,7 +1,9 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import Customers from "./components/customers.jsx";
 import Movies from "./components/movie.jsx";
@@ -15,6 +17,7 @@ import RegisterForm from "./components/registerForm";
 function App() {
   return (
     <>
+      <ToastContainer />
       <NavBar />
       <main className="container">
         <Routes>

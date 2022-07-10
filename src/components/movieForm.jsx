@@ -1,8 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 import { useNavigate, useParams } from "react-router-dom";
 
 class MovieForm extends Form {
