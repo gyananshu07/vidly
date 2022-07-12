@@ -1,8 +1,10 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import { login, getCurrentUser } from "../services/loginService";
+import { Navigate } from "react-router-dom";
 
-export class LoginForm extends Form {
+export default class LoginForm extends Form {
   state = {
     data: { username: "", password: "" },
     errors: {},
@@ -13,11 +15,25 @@ export class LoginForm extends Form {
     password: Joi.string().required().label("Password"),
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
+  doSubmit = async () => {
+    try {
+      const { data } = this.state;
+      await login(data.username, data.password);
+
+      window.location = "/movies";
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {
+    if (getCurrentUser()) {
+      <Navigate replace to="/movies" />;
+    }
     return (
       <div>
         <h1>Login</h1>
@@ -30,5 +46,3 @@ export class LoginForm extends Form {
     );
   }
 }
-
-export default LoginForm;
