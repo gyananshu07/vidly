@@ -2,6 +2,7 @@
   "name": "vidly",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gyananshu07.github.io",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
@@ -11,6 +12,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0-beta1",
     "font-awesome": "^4.7.0",
+    "gh-pages": "^4.0.0",
     "joi": "^17.6.0",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^3.1.2",
@@ -25,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
